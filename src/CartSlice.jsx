@@ -18,7 +18,12 @@ export const CartSlice = createSlice({
         const { name, image, cost } = action.payload;   
         const existingItem = state.items.find(item => item.name === name);
 
-        existingItem ? existingItem.quantity++ : state.items.push({ name, image, cost, quantity: 1 })
+        // existingItem ? existingItem.quantity++ : state.items.push({ name, image, cost, quantity: 1 })
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            state.items.push({ name, image, cost, quantity: 1 });
+        }
     },
     // Now you need to complete code for the removeItem() and updateQuantity() reducers.
     // removeItem(): This reducer removes an item from the cart based on its name and gets called when the user wants to remove products from the cart.
