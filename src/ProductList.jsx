@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import addItem from './CartSlice'
+import { addItem } from './CartSlice'   // Make sure this is in brackets!
 import { useDispatch } from 'react-redux';
 
 function ProductList() {
@@ -14,13 +14,16 @@ function ProductList() {
     const dispatch = useDispatch();
 
     const handleAddToCart = (product) => {
-        dispatch(addItem(product));
+        // I had an error coming from dispatch where it said "TypeError: s is undefined"
+        // This error happened because addItem being imported above wasn't in brackets! (like so { addItem })
         setAddedToCart((prevState) => ({
             ...prevState,
             [product.name]: true,
         }));
 
         console.log(addedToCart);
+        console.log(product)
+        dispatch(addItem(product));
     };
 
     const plantsArray = [
