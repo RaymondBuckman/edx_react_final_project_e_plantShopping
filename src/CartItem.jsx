@@ -63,8 +63,10 @@ const CartItem = ({ onContinueShopping, setShowCart, cartCount, setCartCount }) 
     }
 
     const handleDecrement = (item) => {
-        if(item.quantity > 0) dispatch(updateQuantity({ ...item, quantity: item.quantity - 1 }));
-        setCartCount(cartCount - 1);
+        if(item.quantity > 0) {
+            dispatch(updateQuantity({ ...item, quantity: item.quantity - 1 }));
+            setCartCount(cartCount - 1);
+        }
     };
 
     
