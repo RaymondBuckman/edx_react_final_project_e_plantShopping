@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from './CartSlice';
+import { removeItem, updateQuantity, toggleDisabled } from './CartSlice';
 import './CartItem.css';
 
 // Task 3
@@ -74,10 +74,16 @@ const CartItem = ({ onContinueShopping, setShowCart, cartCount, setCartCount }) 
     // For the handleRemove() function you need to dispatch the removeItem() method.
     const handleRemove = (item) => {
         dispatch(removeItem({ ...item, name: item.name }));
+        
+        // console.log(item)
 
         // If a plant is removed from the card, subtract its quantity from the total
         setCartCount(cartCount - item.quantity);
     };
+
+    const handleToggle = (item) => {
+        dispatch(toggleDisabled({ ...item, disabled: true }))
+    }
 
 
     // 6. Item subtotal
@@ -107,18 +113,18 @@ const CartItem = ({ onContinueShopping, setShowCart, cartCount, setCartCount }) 
         <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
         <div>
             {cart.map(item => (
-            <div className="cart-item" key={item.name}>
+            <div className="cart-item" key={item}>
                 <img className="cart-item-image" src={item.image} alt={item.name} />
                 <div className="cart-item-details">
-                <div className="cart-item-name">{item.name}</div>
-                <div className="cart-item-cost">{item.cost}</div>
-                <div className="cart-item-quantity">
-                    <button className="cart-item-button cart-item-button-dec" onClick={() => handleDecrement(item)}>-</button>
-                    <span className="cart-item-quantity-value">{item.quantity}</span>
-                    <button className="cart-item-button cart-item-button-inc" onClick={() => handleIncrement(item)}>+</button>
-                </div>
-                <div className="cart-item-total">Total: ${calculateTotalCost(item)}</div>
-                <button className="cart-item-delete" onClick={() => handleRemove(item)}>Delete</button>
+                    <div className="cart-item-name">{item.name} {item.disabled ? 'True' : 'False'}</div>
+                    <div className="cart-item-cost" onClick={() => handleToggle(item)}>{item.cost}</div>
+                    <div className="cart-item-quantity">
+                        <button className="cart-item-button cart-item-button-dec" onClick={() => handleDecrement(item)}>-</button>
+                        <span className="cart-item-quantity-value">{item.quantity}</span>
+                        <button className="cart-item-button cart-item-button-inc" onClick={() => handleIncrement(item)}>+</button>
+                    </div>
+                    <div className="cart-item-total">Total: ${calculateTotalCost(item)}</div>
+                    <button className="cart-item-delete" onClick={() => handleRemove(item)}>Delete</button>
                 </div>
             </div>
             ))}
@@ -127,7 +133,7 @@ const CartItem = ({ onContinueShopping, setShowCart, cartCount, setCartCount }) 
         <div className="continue_shopping_btn">
             <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
             <br />
-            <button className="get-started-button1">Checkout</button>
+            <button className="get-started-button1" onClick={(e) => handleCheckoutShopping(e)}>Checkout</button>
         </div>
         </div>
     );

@@ -15,15 +15,15 @@ export const CartSlice = createSlice({
     // The addItem() function should get called when the user selects an Add to cart on the plant listing page. Subsequently, the handleAddToCart() gets called which has the plant type as a parameter.
     // The handleAddToCart() function will then dispatch the plant details to the addItem() reducer function in CartSlice.jsx.
     addItem: (state, action) => {
-        const { name, image, cost } = action.payload;   
+        const { name, image, cost, disabled } = action.payload;   
         const existingItem = state.items.find(item => item.name === name);
 
-        existingItem ? existingItem.quantity++ : state.items.push({ name, image, cost, quantity: 1 })
+        existingItem ? existingItem.quantity++ : state.items.push({ name, image, cost, disabled, quantity: 1 })
     },
     // Now you need to complete code for the removeItem() and updateQuantity() reducers.
     // removeItem(): This reducer removes an item from the cart based on its name and gets called when the user wants to remove products from the cart.
     removeItem: (state, action) => {
-        // const { name, image, cost } = action.payload; 
+        const { name, image, cost, disabled } = action.payload;
         state.items = state.items.filter(item => item.name !== action.payload.name);
     },
     // updateQuantity(): To create this function, start by extracting the item's name and amount from the action.payload. Then, look for the item in the 
@@ -32,18 +32,27 @@ export const CartSlice = createSlice({
     updateQuantity: (state, action) => {
         // console.log(state)
         // console.log(action)
-        console.log(action.payload.change)
+        // console.log(action.payload.change)
         const { name, quantity } = action.payload;
         const itemToUpdate = state.items.find(item => item.name === name);
 
+        console.log(itemToUpdate.name)      // Lol...works
         if(itemToUpdate) itemToUpdate.quantity = quantity
         // itemToUpdate.quantity += action.payload.change;
-
-    
     },
+    toggleDisabled: (state, action) => {
+        const { name, cost, disabled } = action.payload;
+        // state.items.map(item =>
+        //     item.name === action.payload.name ? { ...item, disabled: action.payload.disabled } : item
+        // )
+        const itemToUpdate = state.items.find(item => item.name === name);
+        console.log(itemToUpdate.name)  // Lol...doesn't work
+
+        if(itemToUpdate) itemToUpdate.disabled = disabled
+    }
   },
 });
 
-export const { addItem, removeItem, updateQuantity } = CartSlice.actions;
+export const { addItem, removeItem, updateQuantity, toggleDisabled } = CartSlice.actions;
 
 export default CartSlice.reducer;
