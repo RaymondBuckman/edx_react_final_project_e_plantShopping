@@ -39,6 +39,14 @@ body {
    
 }
 
+#cartNumber {
+    position: absolute;
+    top: 32px;
+    right: 40px;
+    font-size: .5em;
+    z-index: 10;
+}
+
 /* Product Grid */
 .product-grid {
     display:flex;

@@ -14,7 +14,7 @@ import './CartItem.css';
 
 // You will dispatch the increment, decrement, and update quantity details from a Redux file.
 
-const CartItem = ({ onContinueShopping, setShowCart, cartCount, setCartCount }) => {
+const CartItem = ({ onContinueShopping, setShowCart, cartCount, setCartCount, handleEnabled }) => {
     const cart = useSelector(state => state.cart.items);
     const dispatch = useDispatch();
 
@@ -79,6 +79,8 @@ const CartItem = ({ onContinueShopping, setShowCart, cartCount, setCartCount }) 
 
         // If a plant is removed from the card, subtract its quantity from the total
         setCartCount(cartCount - item.quantity);
+
+        handleEnabled(item)
     };
 
     const handleToggle = (item) => {
@@ -116,7 +118,7 @@ const CartItem = ({ onContinueShopping, setShowCart, cartCount, setCartCount }) 
             <div className="cart-item" key={item}>
                 <img className="cart-item-image" src={item.image} alt={item.name} />
                 <div className="cart-item-details">
-                    <div className="cart-item-name">{item.name} {item.disabled ? 'True' : 'False'}</div>
+                    <div className="cart-item-name">{item.name}</div>
                     <div className="cart-item-cost" onClick={() => handleToggle(item)}>{item.cost}</div>
                     <div className="cart-item-quantity">
                         <button className="cart-item-button cart-item-button-dec" onClick={() => handleDecrement(item)}>-</button>
